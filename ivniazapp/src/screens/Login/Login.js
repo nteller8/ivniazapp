@@ -26,8 +26,8 @@ class Login extends Component {
   }
 
   login(email, pass) {
-    auth
-      .signInWithEmailAndPassword(email, pass)
+    if(email && pass){
+      auth.signInWithEmailAndPassword(email, pass)
       .then((response) => {
         //Cuando firebase responde sin error
         console.log("Login ok", response);
@@ -40,8 +40,11 @@ class Login extends Component {
       .catch((error) => {
         //Cuando Firebase responde con un error.
         console.log(error);
-      });
+      }); 
+    }
+   
   }
+  //puse un if por si queremos poner un else con un mensaje de error que diga que complete los campos
 
   render() {
     return (
