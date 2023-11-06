@@ -4,13 +4,13 @@ import {TextInput, TouchableOpacity, View, Text, StyleSheet} from 'react-native'
 import MyCamera from "../../components/MyCamera/MyCamera";
 
 class PostForm extends Component{
-    contructor(){
+    constructor(){
         super()
         this.state={
             textPost: "",
             showCamera: true,
             url: ""
-        }
+        };
     }
 
     
@@ -46,11 +46,11 @@ class PostForm extends Component{
               placeholder='Escribí una descripción de foto'
               keyboardType='default'
               value={this.state.textPost}
-            />
+            /> </>}
             <TouchableOpacity style={styles.button} onPress={() => this.createPost(auth.currentUser.email, this.state.textPost, Date.now())}>
               <Text style={styles.textButton}>Post</Text>
             </TouchableOpacity>
-          </>}
+         
           </View>
         );
       }

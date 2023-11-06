@@ -5,6 +5,7 @@ import {
     View,
     Text,
     StyleSheet,
+    FlatList,
 } from "react-native";
 import { db, auth } from "../../firebase/config";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
