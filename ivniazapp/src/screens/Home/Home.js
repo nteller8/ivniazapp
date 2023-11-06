@@ -53,7 +53,7 @@ class Home extends Component {
                     <Text>Logout</Text>
                 </TouchableOpacity>
                 <Text>Crear nuevo post</Text>
-                <PostForm />
+               
 
                 <Text>Lista de posteos</Text>
 

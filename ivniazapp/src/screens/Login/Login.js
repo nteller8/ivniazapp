@@ -20,7 +20,7 @@ class Login extends Component {
   componentDidMount() {
     auth.onAuthStateChanged((user) => {
       if (user) {
-        this.props.navigation.navigate("Home");
+        this.props.navigation.navigate("TabNavigator");
       }
     });
   }
@@ -35,7 +35,7 @@ class Login extends Component {
         //Cambiar los estados a vacío como están al inicio.
 
         //Redirigir al usuario a la home del sitio.
-        this.props.navigation.navigate("Home");
+        this.props.navigation.navigate("TabNavigator");
       })
       .catch((error) => {
         //Cuando Firebase responde con un error.
