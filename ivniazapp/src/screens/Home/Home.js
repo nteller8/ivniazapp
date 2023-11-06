@@ -1,37 +1,71 @@
 import react, { Component } from "react";
 import {
-  TextInput,
-  TouchableOpacity,
-  View,
-  Text,
-  StyleSheet,
+    TextInput,
+    TouchableOpacity,
+    View,
+    Text,
+    StyleSheet,
 } from "react-native";
-import { auth } from "../../firebase/config";
+import { db, auth } from "../../firebase/config";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Post from "../../components/Post/Post";
+import PostForm from "../PostForm/PostForm";
 
-const Tab = createBottomTabNavigator;
+const Tab = createBottomTabNavigator();
 
 class Home extends Component {
-  constructor() {
-    super();
-    this.state = {};
-  }
+    constructor() {
+        super();
+        this.state = {
+            post: []
+        };
+    }
+    componentDidMount() {
+        //Traer los datos de Firebase y cargarlos en el estado.
+        db.collection('posts').onSnapshot(
+            listaPosts => {
+                let postsAMostrar = [];
+                listaPosts.forEach(unPost => {
+                    postsAMostrar.push({
+                        id: unPost.id,
+                        datos: unPost.data()
+                    })
+                })
+                this.setState({
+                    posts: postsAMostrar
+                })
+            }
+        )
 
-  logout() {
-    auth.signOut();
-    this.props.navigation.navigate("Login");
-  }
+    }
 
-  render() {
-    return (
-      <View>
-        <Text>HOME</Text>
-        <TouchableOpacity onPress={() => this.logout()}>
-          <Text>Logout</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
+    logout() {
+        auth.signOut();
+        this.props.navigation.navigate("Login");
+    }
+
+    render() {
+        return (
+            <View>
+                <Text>HOME</Text>
+                <TouchableOpacity onPress={() => this.logout()}>
+                    <Text>Logout</Text>
+                </TouchableOpacity>
+                <Text>Crear nuevo post</Text>
+                <PostForm />
+
+                <Text>Lista de posteos</Text>
+
+                <FlatList
+                    data={this.state.posts}
+                    keyExtractor={unPost => unPost.id}
+                    renderItem={({ item }) => <Post dataPost={item} />}
+                />
+
+
+            </View>
+        );
+    }
 }
 
 export default Home;
