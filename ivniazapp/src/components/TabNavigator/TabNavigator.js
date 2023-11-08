@@ -2,7 +2,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../../screens/Home/Home';
 import PostForm from '../../screens/PostForm/PostForm';
-import Profile from '../../screens/Profile/Profile';
+import MyProfile from '../../screens/MyProfile/MyProfile';
 import Buscador from '../../screens/Buscador/Buscador';
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -21,7 +21,7 @@ export default function TabNavigator() {
             {/* <Tab.Screen name="Profile" component={Profile} /> */}
             <Tab.Screen name="PostForm" component={PostForm} />
             <Tab.Screen name="Buscador" component={Buscador} />
-            <Tab.Screen name="Profile" component={Profile} />
+            <Tab.Screen name="MyProfile" component={MyProfile} />
         </Tab.Navigator>
     )
 
