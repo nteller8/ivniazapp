@@ -47,7 +47,7 @@ class Home extends Component {
 
     render() {
         return (
-            <View>
+            <>
                 <Text>HOME</Text>
                 <TouchableOpacity onPress={() => this.logout()}>
                     <Text>Logout</Text>
@@ -63,8 +63,7 @@ class Home extends Component {
                     renderItem={({ item }) => <Post dataPost={item} />}
                 />
 
-
-            </View>
+            </>
         );
     }
 }

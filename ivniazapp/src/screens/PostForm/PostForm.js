@@ -46,11 +46,11 @@ class PostForm extends Component{
               placeholder='Escribí una descripción de foto'
               keyboardType='default'
               value={this.state.textPost}
-            /> </>}
+            /> 
             <TouchableOpacity style={styles.button} onPress={() => this.createPost(auth.currentUser.email, this.state.textPost, Date.now())}>
               <Text style={styles.textButton}>Post</Text>
             </TouchableOpacity>
-         
+         </>}
           </View>
         );
       }
