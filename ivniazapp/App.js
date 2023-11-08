@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import Register from "./src/screens/Register/Register";
 import Login from "./src/screens/Login/Login";
-import Home from "./src/screens/Home/Home";
+import TabNavigator from './src/components/TabNavigator/TabNavigator'
 
 const Stack = createNativeStackNavigator();
 
@@ -23,8 +23,8 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Home"
-          component={Home}
+          name="TabNavigator"
+          component={TabNavigator}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
