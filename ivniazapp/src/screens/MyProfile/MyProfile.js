@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component } from 'React';
 
-class Profile extends Component{
+class MyProfile extends Component{
     constructor(){
         super()
         this.state={
@@ -16,4 +16,4 @@ class Profile extends Component{
           console.log('Esto es el Profile')
   )}}
 
-export default Profile;
+export default MyProfile;
