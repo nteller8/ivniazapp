@@ -12,6 +12,7 @@ class Register extends Component {
             pass: '',
             bio: '',
             profileImage: '',
+            mensajeError: '',
         }
     }
 
@@ -28,6 +29,12 @@ class Register extends Component {
 
 
     register(email, pass, userName, bio, profileImage){
+
+        if (email && pass && userName) {
+
+
+
+        
             auth.createUserWithEmailAndPassword(email,pass)
             .then(res => {
                 db.collection('users').add({
@@ -39,15 +46,24 @@ class Register extends Component {
                     // podríamos hacer un -> console.log("el usuario fue creado con exito")) 
         })
     })       
-            .catch(error => console.log(`ocurrio el siguiente error : ${error}`))
+            .catch(error => {
+                this.setState ({mensajeError: error.message});
+                console.error(`ocurrio el siguiente error : ${error}`)
+    });
+    } else{
+        this.setState({mensajeError: "Por favor complete todos los cambos obligatios."});
     }
+};
 
     render(){
         return(
-            <View>
-                <Text>Register</Text>
+            <View style= {styles.formContainer}>
+                <Text>Registro</Text>
+                {this.state.mensajeError ? <Text style={styles.errorText}>{this.state.mensajeError}</Text> : null}
+                
+             {/* Los inputs deben quedar identados de esta manera */}
                 <Text>Email: </Text>
-                {/* Los inputs deben quedar identados de esta manera */}
+    
                 <TextInput
                     style={styles.input}
                     keyboardType='email-address'
@@ -55,7 +71,15 @@ class Register extends Component {
                     onChangeText={(text) => this.setState({email: text })}
                     value={this.state.email}
                     />
-                <Text>Password: </Text>
+                 <Text>Nombre de usuario: </Text>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={text => this.setState({ userName: text })}
+                    placeholder='Nombre de usuario'
+                    keyboardType='default'
+                    value={this.state.userName}
+                />
+                <Text>Contraseña: </Text>
                 <TextInput
                     style={styles.input}
                     secureTextEntry={true}
@@ -64,6 +88,7 @@ class Register extends Component {
                     onChangeText={(text) => this.setState({pass: text })}
                     value={this.state.pass}
                     />
+                <Text>Biografía opcional: </Text>
                 <TextInput
                     style={styles.input}
                     onChangeText={text => this.setState({bio: text})}
@@ -71,6 +96,7 @@ class Register extends Component {
                     keyboardType='default'
                     value={this.state.bio}
                 />
+                <Text>Foto de perfil: </Text>
                 <TextInput
                     style={styles.input}
                     onChangeText={text => this.setState({profileImage: text })}
@@ -80,9 +106,10 @@ class Register extends Component {
                 />
                 <TouchableOpacity
                     style={styles.buton}
-                    onPress={() => this.register(this.state.email, this.state.pass, this.state.userName, this.state.bio, this.state.profileImage)}>
-                    <Text style={styles.text}>Register</Text>
+                    onPress={() => this.register(this.state.email, this.state.pass, this.state.userName, this.state.bio, this.state.profileImage)}disabled={!this.state.email || !this.state.pass || !this.state.userName}>
+                    <Text style={styles.text}>Registrarse</Text>
                 </TouchableOpacity>
+                
                 {/*SI YA TIENE CUENTA*/}
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}>
                     <Text>¿Ya estás registrado? Ir al login</Text>

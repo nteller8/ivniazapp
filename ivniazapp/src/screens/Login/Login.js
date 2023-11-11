@@ -14,6 +14,7 @@ class Login extends Component {
     this.state = {
       email: "",
       password: "",
+      mensajeError: "",
     };
   }
 
@@ -39,12 +40,15 @@ class Login extends Component {
       })
       .catch((error) => {
         //Cuando Firebase responde con un error.
-        console.log(error);
+        this.setState({mensajeError: error.message});
+          console.error(`ocurrio el siguiente error : ${error}`);
       }); 
+    } else{
+      this.setState({ mensajeError: 'Por favor asegúrate de completar todos los campos.' });
     }
    
   }
-  //puse un if por si queremos poner un else con un mensaje de error que diga que complete los campos
+
 
   render() {
     return (
