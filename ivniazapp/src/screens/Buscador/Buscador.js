@@ -1,32 +1,69 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import {
+    TextInput,
+    TouchableOpacity,
+    View,
+    Text,
+    StyleSheet,
+    FlatList,
+} from "react-native";
+import { db, auth } from '../../firebase/config'
 
 
 class Buscador extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            textoDelInput: ''
+            textoDelInput: '',
+            usuarios: [],
+            mail: [],
+            buscador: false
         }
     }
 
-    controlarEnvio(evento) {
-        evento.preventDefault();
-        return true
+    componentDidMount() {
+        db.collection('users').onSnapshot(docs => {
+            let usuario = [];
+            docs.forEach(doc => {
+                usuario.push({
+                    id: doc.id,
+                    data: doc.data
+                })
+                this.setState({
+                    usuarios: usuario,
+                    cargando: false
+                })
+            })
+        })
     }
-  
-    guardarDatosDelInput(eventoEnElInput) {
+    buscar(texto) {
         this.setState({
-            textoDelInput: eventoEnElInput.target.value
-        }, () => this.props.filtrarPeliculas(this.state.textoDelInput))
-        return true
+            textoDelInput: texto,
+            buscador:texto.length =! 0,
+            mail: texto == '' ? []: this.state.usuarios.filter(usuario => usuario.data.owner.toLowerCase().includes(texto.toLowerCase())|| usuario.data.username.toLowerCase().includes(texto.toLowerCase()))
+        })
+    }
+
+
+    controlarCambios(texto) {
+        this.setState({
+            textoDelInput: texto
+        })
+    }
+    borrarBuscador() {
+        this.setState({
+            mail:[],
+            textoDelInput: '',
+           buscador:false
+        })
     }
 
     render() {
         console.log(this.props);
         return (
             <div className="formDeBusqueda">
-                <form style={{color: "black"}} className="filter" action="" method='GET' onSubmit={(e) => this.controlarEnvio(e)}>
-                    <input style={{color: "black"}} value={this.state.textoDelInput} className="search" type="text"  name='filtro' placeholder="¿Qué queres filtrar?" onChange={(e) => this.guardarDatosDelInput(e)}  />
+                <form style={{ color: "black" }} className="filter" action="" method='GET' onSubmit={(e) => this.controlarEnvio(e)}>
+                    <input style={{ color: "black" }} value={this.state.textoDelInput} className="search" type="text" name='filtro' placeholder="¿Qué queres filtrar?" onChange={(e) => this.guardarDatosDelInput(e)} />
                     <button className="bottonsearch" type='submit'>Filtrar</button>
                 </form>
             </div>

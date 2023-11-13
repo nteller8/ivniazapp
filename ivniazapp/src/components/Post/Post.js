@@ -9,7 +9,10 @@ class Post extends Component {
         super(props)
         this.state={
             like: false,
-            cantLikes: this.props.dataPost.datos.likes.length
+            cantLikes: 0,
+            comentariosArray : [],
+            comentarioTexto: '',
+            
         }
 
         
@@ -53,6 +56,16 @@ class Post extends Component {
         like: false,
         cantLikes: this.props.dataPost.datos.likes.length
     }))
+   }
+
+   borrarPost(){
+    db.collection("posts")
+    .doc(this.props.dataPost.id)
+    .delete()
+    .then(()=> {
+        console.log("El posteo ha sido eliminado correctamente.")
+    })
+
    }
    
 
