@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {TextInput, TouchableOpacity, View, Text, StyleSheet, FlatList, Image} from 'react-native';
+import {TextInput, View, Text, StyleSheet, FlatList, Image, TouchableOpacity} from 'react-native';
 import { auth, db } from '../../firebase/config';
 import firebase from 'firebase';
 
@@ -37,6 +37,7 @@ class Post extends Component {
 
    likear(){
     //El post tendría que guardar una propiedad like con un array de los usuario que lo likearon.
+    console.log("hola");
     db.collection("posts").doc(this.props.dataPost.id).update({
         likes: firebase.firestore.FieldValue.arrayUnion(auth.currentUser.email)
     })
@@ -70,34 +71,23 @@ class Post extends Component {
    
 
     render(){
-        // console.log(this.props);
+        console.log(this.props);
         return(
             <View style={styles.formContainer}>
-                <Text>----------------------------------------------------</Text>
-                <Text>Datos del Post</Text>
-                <Text>Email: {this.props.dataPost.datos.owner}</Text>
-                <Text>Texto: {this.props.dataPost.datos.post}</Text>
-                <Image style={styles.camera} source={{uri:this.props.dataPost.datos.photo }}/>
-                <Text>Cantidad de Likes: {this.state.cantLikes}</Text>
-
-                {/* If ternario 
-                
-        
-                */}
+             
                 {this.state.like ? 
                 <TouchableOpacity style={styles.button} onPress={()=>this.dislike()}>
-                    <Text style={styles.textButton} >Dislike</Text>
-                    
+                    <Text style={styles.textButton} >Like</Text>
                 </TouchableOpacity>
                 :
                 <TouchableOpacity style={styles.button} onPress={()=>this.likear()}>
-                    <Text style={styles.textButton} >Like</Text>
+                    <Text style={styles.textButton} >Dislike</Text>
                 </TouchableOpacity>
                 }
                 
                 {/* PARA QUE SE VEA LA CANTIDAD DE LIKES -> CHEQUEAR SI ESTA OK*/}
                 <Text style={styles.likeCount}>{this.state.cantLikes} Likes</Text>
-                
+
                 <View> 
                 <TouchableOpacity onPress={() => this.props.navigation.navigate(
                     'Comment', {id:this.props.dataPost.id})}>
