@@ -67,7 +67,10 @@ class Post extends Component {
                 <Image style={styles.camera} source={{uri:this.props.dataPost.datos.photo }}/>
                 <Text>Cantidad de Likes: {this.state.cantLikes}</Text>
 
-                {/* If ternario */}
+                {/* If ternario 
+                
+                AGREGAR EL BOTON DE COMENTARIOS
+                */}
                 {this.state.like ? 
                 <TouchableOpacity style={styles.button} onPress={()=>this.dislike()}>
                     <Text style={styles.textButton} >Dislike</Text>
