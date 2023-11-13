@@ -69,7 +69,7 @@ class Post extends Component {
 
                 {/* If ternario 
                 
-                AGREGAR EL BOTON DE COMENTARIOS
+        
                 */}
                 {this.state.like ? 
                 <TouchableOpacity style={styles.button} onPress={()=>this.dislike()}>
@@ -82,8 +82,18 @@ class Post extends Component {
                 </TouchableOpacity>
                 }
                 
+                {/* PARA QUE SE VEA LA CANTIDAD DE LIKES -> CHEQUEAR SI ESTA OK*/}
+                <Text style={styles.likeCount}>{this.state.cantLikes} Likes</Text>
                 
+                <View> 
+                <TouchableOpacity onPress={() => this.props.navigation.navigate(
+                    'Comment', {id:this.props.dataPost.id})}>
+                    <Text> Agregar comentario</Text>
+                </TouchableOpacity>
+                </View>
+        
             </View>
+            
         )
     }
 }

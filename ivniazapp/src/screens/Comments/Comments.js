@@ -51,17 +51,17 @@ class Comments extends Component{
                     <TextInput onChangeText=
                         {text => this.setState({nuevoComentario: text})}
                         keyboardType='default'
-                        placeholder='Añade un comentario...'
+                        placeholder='Añade un comentario'
                         value={this.state.nuevoComentario} />  
                         <TouchableOpacity onPress={()=> this.agregarComentario(this.state.id, this.state.nuevoComentario)}>
                             <Text>
-                                Enviar
+                                Comentar
                             </Text>
 
                         </TouchableOpacity>
                 </View>
                 <Text onPress={ () => this.props.navigation.navigate ("TabNavigation")}>
-                    Volver al Home
+                    Volver a Home
                 </Text>
             </View>
         )
