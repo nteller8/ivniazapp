@@ -10,10 +10,9 @@ class Post extends Component {
         super(props)
         this.state={
             like: false,
-            cantLikes: 0,
-            comentariosArray : [],
-            comentarioTexto: '',
-            
+            cantLikes: this.props.dataPost.datos.likes.length,
+            cantCometarios: this.props.dataPost.datos.comentarios.length,
+         
         }
 
         
@@ -34,7 +33,6 @@ class Post extends Component {
             }})
         }
     }
-
 
    likear(){
     //El post tendría que guardar una propiedad like con un array de los usuario que lo likearon.
@@ -75,27 +73,41 @@ class Post extends Component {
         console.log(this.props);
         return(
             <View style={styles.formContainer}>
-             
-                {this.state.like ? 
-                <TouchableOpacity style={styles.likeButton} onPress={()=>this.dislike()}>
-                    <FontAwesome name='heart-o' color='black' size={20}/>
-                </TouchableOpacity>
-                :
-                <TouchableOpacity style={styles.likeButton} onPress={()=>this.likear()}>
-                    <FontAwesome name='heart' color='red' size={20} />
-                </TouchableOpacity>
-                }
                 
-                {/* PARA QUE SE VEA LA CANTIDAD DE LIKES -> CHEQUEAR SI ESTA OK*/}
-                <Text style={styles.likeCount}>{this.state.cantLikes} Likes</Text>
+                <View style={styles.infoUser}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate(
+                        'User', this.props.dataPost.datos.owner )}>
+                        <Text style={styles.username}> {this.props.dataPost.datos.owner}</Text>
+                    </TouchableOpacity>
+                    <Image style={styles.camera} source={{uri:this.props.dataPost.datos.photo}}/>
 
-                <View> 
-                <TouchableOpacity onPress={() => this.props.navigation.navigate(
-                    'Comment', {id:this.props.dataPost.id})}>
-                    <Text> Agregar comentario</Text>
-                </TouchableOpacity>
                 </View>
-        
+                <Text style={styles.postContainer}>{this.props.dataPost.datos.textPost}</Text>
+                <View style={styles.likesContainer}>
+                    {
+                        this.state.like ?
+                            <TouchableOpacity style={styles.likeButton} onPress={() => this.dislike()}>
+                                <FontAwesome name='heart-o' color='black' size={20} />
+                            </TouchableOpacity>
+
+                            :
+                            <TouchableOpacity style={styles.likeButton} onPress={() => this.likear()}>
+                                <FontAwesome name='heart' color='red' size={20} />
+                               
+                            </TouchableOpacity>
+
+                    }
+
+
+                    <Text style={styles.likeCount}>{this.state.cantLikes} Likes</Text>
+                </View>
+                <View>
+                    <Text>{this.state.cantComentarios} Comentarios</Text>
+                    <TouchableOpacity style={styles.commentButton} onPress={() => this.props.navigation.navigate(
+                        'Comments', { id: this.props.dataPost.id })}>
+                        <FontAwesome name='comment' color='black' size={20} />
+                    </TouchableOpacity>
+                </View>
             </View>
             
         )
@@ -106,6 +118,9 @@ const styles = StyleSheet.create({
     formContainer: {
         height: `60vh`,
         widht: `100vw`,
+    },
+    postContainer: {
+
     },
     camera: {
         widht: '100%',
@@ -137,7 +152,14 @@ const styles = StyleSheet.create({
     },
     likeButton: {
         marginLeft: 7,
-    }
+    },
+    infoUser:{
+
+    },
+    likesContainer:{
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
   });
 
 
