@@ -19,9 +19,23 @@ export default function TabNavigator() {
                     { tabBarIcon: () => <FontAwesome name="home" size={24} color="black" /> }
                 } />
             {/* <Tab.Screen name="Profile" component={Profile} /> */}
-            <Tab.Screen name="PostForm" component={PostForm} />
-            <Tab.Screen name="Buscador" component={Buscador} />
-            <Tab.Screen name="MyProfile" component={MyProfile} />
+            <Tab.Screen name="Buscador" 
+                        component={Buscador}
+                        options={
+                            {tabBarIcon: () => <FontAwesome name="search" size={24} color="black" /> }
+                        }  />
+            <Tab.Screen name="PostForm" 
+                        component={PostForm}
+                        options={
+                            {tabBarIcon: () => <FontAwesome name="camera" size={24} color="black" />}
+                        }  />
+
+            <Tab.Screen name="MyProfile" 
+                        component={MyProfile}
+                        options={
+                            {tabBarIcon: () => <FontAwesome name="user" size={24} color="black" />}
+                        } 
+                         />
         </Tab.Navigator>
     )
 

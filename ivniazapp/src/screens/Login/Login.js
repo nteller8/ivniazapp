@@ -14,7 +14,7 @@ class Login extends Component {
     this.state = {
       email: "",
       password: "",
-      mensajeError: "",
+      errorMessage: "",
     };
   }
 
@@ -40,11 +40,11 @@ class Login extends Component {
       })
       .catch((error) => {
         //Cuando Firebase responde con un error.
-        this.setState({mensajeError: error.message});
-          console.error(`ocurrio el siguiente error : ${error}`);
+        this.setState({errorMessage: error.message});
+          console.error('Firebase authentication error:', error);
       }); 
     } else{
-      this.setState({ mensajeError: 'Por favor asegúrate de completar todos los campos.' });
+      this.setState({ errorMessage: 'Por favor asegúrate de completar todos los campos.' });
     }
    
   }
@@ -54,6 +54,7 @@ class Login extends Component {
     return (
       <View style={styles.formContainer}>
         <Text>Login</Text>
+        {this.state.errorMessage ? <Text style={styles.errorText}>{this.state.errorMessage}</Text> : null}
         <TextInput
           style={styles.input}
           onChangeText={(text) => this.setState({ email: text })}
@@ -71,7 +72,7 @@ class Login extends Component {
         />
         <TouchableOpacity
           style={styles.button}
-          onPress={() => this.login(this.state.email, this.state.password)}
+          onPress={() => this.login(this.state.email, this.state.password)} disabled={!this.state.email || !this.state.password}
         >
           <Text style={styles.textButton}>Ingresar</Text>
         </TouchableOpacity>

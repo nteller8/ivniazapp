@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {TextInput, View, Text, StyleSheet, FlatList, Image, TouchableOpacity} from 'react-native';
 import { auth, db } from '../../firebase/config';
 import firebase from 'firebase';
+import { FontAwesome } from '@expo/vector-icons';
 
 
 class Post extends Component {
@@ -76,12 +77,12 @@ class Post extends Component {
             <View style={styles.formContainer}>
              
                 {this.state.like ? 
-                <TouchableOpacity style={styles.button} onPress={()=>this.dislike()}>
-                    <Text style={styles.textButton} >Like</Text>
+                <TouchableOpacity style={styles.likeButton} onPress={()=>this.dislike()}>
+                    <FontAwesome name='heart-o' color='black' size={20}/>
                 </TouchableOpacity>
                 :
-                <TouchableOpacity style={styles.button} onPress={()=>this.likear()}>
-                    <Text style={styles.textButton} >Dislike</Text>
+                <TouchableOpacity style={styles.likeButton} onPress={()=>this.likear()}>
+                    <FontAwesome name='heart' color='red' size={20} />
                 </TouchableOpacity>
                 }
                 
@@ -134,6 +135,9 @@ const styles = StyleSheet.create({
     textButton: {
       color: "#fff",
     },
+    likeButton: {
+        marginLeft: 7,
+    }
   });
 
 

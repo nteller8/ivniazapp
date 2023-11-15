@@ -12,7 +12,7 @@ class Register extends Component {
             pass: '',
             bio: '',
             profileImage: '',
-            mensajeError: '',
+            errorMessage: '',
         }
     }
 
@@ -31,10 +31,6 @@ class Register extends Component {
     register(email, pass, userName, bio, profileImage){
 
         if (email && pass && userName) {
-
-
-
-        
             auth.createUserWithEmailAndPassword(email,pass)
             .then(res => {
                 db.collection('users').add({
@@ -44,14 +40,15 @@ class Register extends Component {
                     profileImage: profileImage || '',
                     createdAt: Date.now(),
                     // podríamos hacer un -> console.log("el usuario fue creado con exito")) 
-        })
-    })       
+                })
+                this.props.navigation.navigate("Login")
+            })       
             .catch(error => {
-                this.setState ({mensajeError: error.message});
-                console.error(`ocurrio el siguiente error : ${error}`)
-    });
+                this.setState ({errorMessage: error.message});
+                console.error('Firebase authentication error:', error)
+            });
     } else{
-        this.setState({mensajeError: "Por favor complete todos los cambos obligatios."});
+        this.setState({errorMessage: "Por favor complete todos los cambos obligatios."});
     }
 };
 
@@ -59,7 +56,7 @@ class Register extends Component {
         return(
             <View style= {styles.formContainer}>
                 <Text>Registro</Text>
-                {this.state.mensajeError ? <Text style={styles.errorText}>{this.state.mensajeError}</Text> : null}
+                {this.state.errorMessage ? <Text style={styles.errorText}>{this.state.errorMessage}</Text> : null}
                 
              {/* Los inputs deben quedar identados de esta manera */}
                 <Text>Email: </Text>
@@ -106,7 +103,7 @@ class Register extends Component {
                 />
                 <TouchableOpacity
                     style={styles.buton}
-                    onPress={() => this.register(this.state.email, this.state.pass, this.state.userName, this.state.bio, this.state.profileImage)}disabled={!this.state.email || !this.state.pass || !this.state.userName}>
+                    onPress={() => this.register(this.state.email, this.state.pass, this.state.userName, this.state.bio, this.state.profileImage)} disabled={!this.state.email || !this.state.pass || !this.state.userName}>
                     <Text style={styles.text}>Registrarse</Text>
                 </TouchableOpacity>
                 
