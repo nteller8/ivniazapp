@@ -79,8 +79,9 @@ class Post extends Component {
                         'User', this.props.dataPost.datos.owner )}>
                         <Text style={styles.username}> {this.props.dataPost.datos.owner}</Text>
                     </TouchableOpacity>
-                    <Image style={styles.camera} source={{uri:this.props.dataPost.datos.photo}}/>
-
+                    <View style={styles.container}>
+                    <Image style={styles.image} source={{uri:this.props.dataPost.datos.photo}}/>
+                    </View>
                 </View>
                 <Text style={styles.postContainer}>{this.props.dataPost.datos.textPost}</Text>
                 <View style={styles.likesContainer}>
@@ -122,10 +123,11 @@ const styles = StyleSheet.create({
     postContainer: {
 
     },
-    camera: {
-        widht: '100%',
-        height: '100%',
+    image: {
+height: 300,
+width: "100%"
     },
+    container: {flex: 1,},
     input: {
       height: 20,
       paddingVertical: 15,
