@@ -1,41 +1,86 @@
-import react, { Component } from "react";
-import {
-  TextInput,
-  TouchableOpacity,
-  View,
-  Text,
-  StyleSheet,
-  FlatList 
-} from "react-native";
-
-import { auth, db } from "../../firebase/config";
-
+import React, { Component } from 'react';
+import { db, auth } from '../../firebase/config';
+import { TextInput, TouchableOpacity, View, Text, StyleSheet, FlatList } from 'react-native';
+import Post from "../../components/Post/Post";
+import firebase from 'firebase';
 
 
 class User extends Component {
-  constructor() {
-    super();
-    this.state = {};
+  constructor(props) {
+    super(props)
+    this.state = {
+      susPosts: [],
+      dataUser: "",
+      id: '',
+      mailusuario: this.props.route.params
+    };
   }
 
+  componentDidMount() {
+    console.log("MIGUEL")
+    db.collection('posts').where('owner', '==', this.state.mailusuario)
+
+      .onSnapshot(
+        listaPosts => { //docs
+          let postsAMostrar = [];
+          listaPosts.forEach(unPost => {
+            postsAMostrar.push({
+              id: unPost.id,
+              datos: unPost.data()
+            })
+          })
+
+          this.setState({
+            posts: postsAMostrar
+          })
+        }
+      )
+
+    db.collection('users')
+      .where('owner', '==', auth.currentUser.email)
+      .onSnapshot(docs => {
+        let usuario = []
+        docs.forEach((doc) => {
+          usuario.push({
+            id: doc.id,
+            data: doc.data()
+          })
+        })
+        console.log(usuario)
+        this.setState({
+          dataUser: usuario[0]
+
+        })
 
 
-  logout() {
-    auth.signOut();
-    this.props.navigation.navigate("Login");
+      })
+
   }
+
 
   render() {
-    console.log(this.state.users);
+    console.log('Esto es el Profile de otro usuario')
     return (
       <View>
-        <Text>User</Text>
+{/* 
+        <Text>Biografia: {this.state.dataUser.data.bio}</Text>
+        <Text>Usuario: {this.state.dataUser.data.userName}</Text>
+        <Text>{this.state.susPosts.length} posteos:</Text>
 
-        <TouchableOpacity onPress={() => this.logout()}>
-          <Text>Logout</Text>
-        </TouchableOpacity>
+        <View>
+          <FlatList
+            data={this.state.susPosts}
+            keyExtractor={unPost => unPost.id.toString()}
+            renderItem={({ item }) => <Post dataPost={item.datos} navigation={this.props.navigation} />}
+          />
+        </View> */}
+
+
+
       </View>
-    );
+
+
+    )
   }
 }
 

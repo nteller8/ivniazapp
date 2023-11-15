@@ -11,7 +11,7 @@ class Post extends Component {
         this.state={
             like: false,
             cantLikes: this.props.dataPost.datos.likes.length,
-            cantCometarios: this.props.dataPost.datos.comentarios.length,
+            cantComentarios: this.props.dataPost.datos.comentarios.length,
          
         }
 
@@ -57,7 +57,7 @@ class Post extends Component {
         cantLikes: this.props.dataPost.datos.likes.length
     }))
    }
-
+//hacer que ande borrar para myprofile
    borrarPost(){
     db.collection("posts")
     .doc(this.props.dataPost.id)
