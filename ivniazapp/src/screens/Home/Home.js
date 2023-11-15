@@ -15,8 +15,8 @@ import PostForm from "../PostForm/PostForm";
 const Tab = createBottomTabNavigator();
 
 class Home extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             post: []
         };
@@ -60,7 +60,7 @@ class Home extends Component {
                 <FlatList
                     data={this.state.posts}
                     keyExtractor={unPost => unPost.id}
-                    renderItem={({ item }) => <Post dataPost={item} />}
+                    renderItem={({ item }) => <Post navigation ={this.props.navigation} dataPost={item} />}
                 />
 
             </>
