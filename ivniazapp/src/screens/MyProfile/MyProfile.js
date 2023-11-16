@@ -3,6 +3,7 @@ import {db, auth } from '../../firebase/config';
 import {TextInput, TouchableOpacity, View, Text, StyleSheet, FlatList} from 'react-native';
 import Post from "../../components/Post/Post";
 import firebase from 'firebase';
+import {updatePassword} from 'firebase/auth'
 
 
 class MyProfile extends Component{
@@ -10,8 +11,11 @@ class MyProfile extends Component{
         super(props)
         this.state={
             posts: [],
-            dataUser: {},
-            id: ''
+            dataUser: [],
+            id: '',
+            newPass:"",
+            nombreUser: "",
+
         };
     }
 
@@ -36,8 +40,8 @@ class MyProfile extends Component{
 
         db.collection('users')
             .where('owner', '==', auth.currentUser.email)
-            .onSnapshot(doc => {
-                doc.forEach(doc =>
+            .onSnapshot(docs => {
+                docs.forEach(doc =>
                     this.setState({
                         id: doc.id,
                         dataUser: doc.data()

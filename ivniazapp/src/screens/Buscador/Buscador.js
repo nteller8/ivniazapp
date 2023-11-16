@@ -71,10 +71,10 @@ class Buscador extends Component {
             {this.state.filter.length > 0 ?
                 <FlatList
                     data={this.state.filter}
-                    keyExtractor={unUser => unUser.id}
+                    keyExtractor={usuario => usuario.id}
                     renderItem={({item})=>
                     <TouchableOpacity style={styles.button} onPress={() => this.SelectedUser(item.data.owner)}>
-                    <Text>{item.data.userName}</Text>
+                    <Text>{item.data.username}</Text>
                     </TouchableOpacity>
                     }
                 />
