@@ -7,6 +7,7 @@ import Login from "./src/screens/Login/Login";
 import TabNavigator from './src/components/TabNavigator/TabNavigator';
 import Comments from "./src/screens/Comments/Comments";
 import User from './src/screens/User/User';
+import Buscador from './src/screens/Buscador/Buscador'
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -38,6 +39,12 @@ export default function App() {
           component={User}
           options={{ headerShown: true }}
         />
+        <Stack.Screen
+          name="Buscador"
+          component={Buscador}
+          options={{ headerShown: true }}
+        />
+      
       </Stack.Navigator>
     </NavigationContainer>
   );

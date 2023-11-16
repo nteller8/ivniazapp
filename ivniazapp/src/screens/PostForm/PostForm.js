@@ -22,6 +22,7 @@ class PostForm extends Component{
             likes:[],
             comentarios:[],
             createdAt: Date.now(),//Date.now(), 
+            username: username,
         })
         .then( res => console.log(res))
         .catch( e => console.log(e))
