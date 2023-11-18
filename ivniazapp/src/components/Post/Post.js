@@ -12,7 +12,7 @@ class Post extends Component {
             like: false,
             cantLikes: this.props.dataPost.datos.likes.length,
             cantComentarios: this.props.dataPost.datos.comentarios.length,
-         
+            MensajeAMostrar: false
         }
 
         
@@ -55,13 +55,20 @@ class Post extends Component {
    }
 //hacer que ande borrar para myprofile
    borrarPost(){
-    db.collection("posts")
-    .doc(this.props.dataPost.id)
-    .delete()
-    .then(()=> {
-        console.log("El posteo ha sido eliminado correctamente.")
-    })
+    if(this.props.dataPost.datos.owner === auth.currentUser.email){
+        db.collection("posts")
+        .doc(this.props.dataPost.id)
+        .delete()
+        .then(()=> {
+            console.log("El posteo ha sido eliminado correctamente.")
+        })
+        .catch(error=>{
+            console.error('Error al eliminar el post:', error)
+        })
+    } else{
+        this.setState({MensajeAMostrar: true})
 
+    }
    }
    
 
@@ -108,7 +115,16 @@ class Post extends Component {
                         <FontAwesome name='comment' color='black' size={20} />
                     </TouchableOpacity>
                     <Text style={styles.commentCount}>{this.state.cantComentarios} Comentarios</Text>
-                    
+        
+                <TouchableOpacity style = {styles.trashCount} onPress={this.deletePost}>
+                    <FontAwesome name="trash" size={20} color="red" />
+                </TouchableOpacity>
+                
+                {this.state.MensajeAMostrar?
+                    (<Text> No tienes permiso para eliminar este post. </Text> ):
+                    null}
+
+
                 </View>
             </View>
             
@@ -188,6 +204,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginTop: 10,
+    },
+    trashCount: {
+        position: 'absolute',
+        bottom: 5,
+        right: 5,
     },
   });
 

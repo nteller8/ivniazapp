@@ -6,6 +6,7 @@ import {
     Text,
     StyleSheet,
     FlatList,
+    ScrollView,
 } from "react-native";
 import { db, auth } from "../../firebase/config";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -47,23 +48,19 @@ class Home extends Component {
 
     render() {
         return (
-            <>
-                <Text>HOME</Text>
+            <ScrollView><>
                 <TouchableOpacity onPress={() => this.logout()}>
                     <Text>Logout</Text>
                 </TouchableOpacity>
-                <Text>Crear nuevo post</Text>
-               
-
-                <Text>Lista de posteos</Text>
-
+            
                 <FlatList
                     data={this.state.posts}
-                    keyExtractor={unPost => unPost.id}
+                    keyExtractor={unPost => unPost.id.toString()}
                     renderItem={({ item }) => <Post navigation ={this.props.navigation} dataPost={item} />}
                 />
 
             </>
+            </ScrollView>
         );
     }
 }
