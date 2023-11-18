@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { auth } from "../../firebase/config";
+import { auth, db } from "../../firebase/config";
+import firebase from 'firebase/app';
 
 
 class Register extends Component {
@@ -22,7 +23,7 @@ class Register extends Component {
         auth.onAuthStateChanged( user => {
             console.log(user)
             if( user ){
-                this.props.navigation.navigate('Login')
+                this.props.navigation.navigate('Login') //
             }
         })
     }
@@ -33,7 +34,7 @@ class Register extends Component {
         if (email && pass && userName) {
             auth.createUserWithEmailAndPassword(email,pass)
             .then(res => {
-                db.collection('users').add({
+                db.collection('usuarios').add({
                     owner: auth.currentUser.email,
                     userName: userName,
                     bio: bio || '',

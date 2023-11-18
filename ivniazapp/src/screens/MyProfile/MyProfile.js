@@ -38,7 +38,7 @@ class MyProfile extends Component{
             }
         )
 
-        db.collection('users')
+        db.collection('usuarios')
             .where('owner', '==', auth.currentUser.email)
             .onSnapshot(docs => {
                 docs.forEach(doc =>

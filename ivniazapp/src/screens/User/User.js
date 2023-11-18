@@ -12,12 +12,13 @@ class User extends Component {
       susPosts: [],
       dataUser: "",
       id: '',
-      mailusuario: this.props.route.params
+      mailusuario: this.props.route.params.mailusuario,
+  
     };
   }
 
   componentDidMount() {
-    console.log("MIGUEL")
+    console.log(this.props.route.params)
     db.collection('posts').where('owner', '==', this.state.mailusuario)
 
       .onSnapshot(
@@ -36,7 +37,7 @@ class User extends Component {
         }
       )
 
-    db.collection('users')
+    db.collection('usuarios')
       .where('owner', '==', auth.currentUser.email)
       .onSnapshot(docs => {
         let usuario = []
@@ -62,10 +63,10 @@ class User extends Component {
     console.log('Esto es el Profile de otro usuario')
     return (
       <View>
-{/* 
-        <Text>Biografia: {this.state.dataUser.data.bio}</Text>
-        <Text>Usuario: {this.state.dataUser.data.userName}</Text>
-        <Text>{this.state.susPosts.length} posteos:</Text>
+ 
+        <Text>Biografia: {this.state.dataUser.bio}</Text>
+        <Text>Usuario: {this.state.dataUser.userName}</Text>
+       <Text>{this.state.susPosts.length} posteos:</Text>
 
         <View>
           <FlatList
@@ -73,7 +74,7 @@ class User extends Component {
             keyExtractor={unPost => unPost.id.toString()}
             renderItem={({ item }) => <Post dataPost={item.datos} navigation={this.props.navigation} />}
           />
-        </View> */}
+        </View> 
 
 
 
@@ -83,5 +84,5 @@ class User extends Component {
     )
   }
 }
-
+ {/**/}
 export default User;
