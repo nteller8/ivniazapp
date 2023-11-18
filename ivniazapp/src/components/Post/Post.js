@@ -22,16 +22,12 @@ class Post extends Component {
         //Indicar si el post ya está likeado o no
         let likes = this.props.dataPost.datos.likes
 
-        if(likes.length === 0){
+        if (likes.includes(auth.currentUser.email)) {
             this.setState({
-                like: false
+                like: true
             })
         }
-        if(likes.length > 0){
-            likes.forEach( like => {if (like === auth.currentUser.email) {
-                this.setState({ like: true })
-            }})
-        }
+
     }
 
    likear(){
@@ -42,7 +38,7 @@ class Post extends Component {
     })
     .then(this.setState({
         like: true,
-        cantLikes: this.props.dataPost.datos.likes.length
+        cantLikes: this.state.cantLikes +1,
     }))
     .catch(e=> console.log(e))
    }
@@ -54,7 +50,7 @@ class Post extends Component {
     })
     .then(this.setState({
         like: false,
-        cantLikes: this.props.dataPost.datos.likes.length
+        cantLikes: this.state.cantLikes -1,
     }))
    }
 //hacer que ande borrar para myprofile
@@ -84,16 +80,20 @@ class Post extends Component {
                     </View>
                 </View>
                 <Text style={styles.postText}>{this.props.dataPost.datos.textPost}</Text>
+                
                 <View style={styles.likesContainer}>
                     {
                         this.state.like ?
                             <TouchableOpacity style={styles.likeButton} onPress={() => this.dislike()}>
-                                <FontAwesome name='heart-o' color='black' size={20} />
+                                <FontAwesome name='heart' color='red' size={20} />
+                                
                             </TouchableOpacity>
 
                             :
                             <TouchableOpacity style={styles.likeButton} onPress={() => this.likear()}>
-                                <FontAwesome name='heart' color='red' size={20} />
+                                 <FontAwesome name='heart-o' color='black' size={20} />
+                                 
+                                
                                
                             </TouchableOpacity>
 
