@@ -24,7 +24,9 @@ class Home extends Component {
     }
     componentDidMount() {
         //Traer los datos de Firebase y cargarlos en el estado.
-        db.collection('posts').onSnapshot(
+        db.collection('posts')
+            .orderBy('createdAt', 'desc')
+            .onSnapshot(
             listaPosts => {
                 let postsAMostrar = [];
                 listaPosts.forEach(unPost => {
@@ -41,17 +43,12 @@ class Home extends Component {
 
     }
 
-    logout() {
-        auth.signOut();
-        this.props.navigation.navigate("Login");
-    }
+    
 
     render() {
         return (
             <ScrollView><>
-                <TouchableOpacity onPress={() => this.logout()}>
-                    <Text>Logout</Text>
-                </TouchableOpacity>
+        
             
                 <FlatList
                     data={this.state.posts}

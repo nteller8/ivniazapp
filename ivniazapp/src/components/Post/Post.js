@@ -8,10 +8,12 @@ import { FontAwesome } from '@expo/vector-icons';
 class Post extends Component {
     constructor(props){
         super(props)
+        console.log(this.props);
         this.state={
             like: false,
             cantLikes: this.props.dataPost.datos.likes.length,
             cantComentarios: this.props.dataPost.datos.comentarios.length,
+            comentarios: this.props.dataPost.datos.comentarios,
             MensajeAMostrar: false
         }
 
@@ -55,7 +57,10 @@ class Post extends Component {
    }
 //hacer que ande borrar para myprofile
    borrarPost(){
-    if(this.props.dataPost.datos.owner === auth.currentUser.email){
+    const postOwner = this.props.dataPost.datos.owner;
+    const currentUserEmail = auth.currentUser.email;
+    console.log(this.props);
+    if(postOwner === currentUserEmail){
         db.collection("posts")
         .doc(this.props.dataPost.id)
         .delete()
@@ -116,7 +121,9 @@ class Post extends Component {
                     </TouchableOpacity>
                     <Text style={styles.commentCount}>{this.state.cantComentarios} Comentarios</Text>
         
-                <TouchableOpacity style = {styles.trashCount} onPress={this.deletePost}>
+
+
+                <TouchableOpacity style = {styles.trashCount} onPress={this.borrarPost}>
                     <FontAwesome name="trash" size={20} color="red" />
                 </TouchableOpacity>
                 

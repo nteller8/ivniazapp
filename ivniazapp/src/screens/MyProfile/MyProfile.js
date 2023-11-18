@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {db, auth } from '../../firebase/config';
-import {TextInput, TouchableOpacity, View, Text, StyleSheet, FlatList, ScrollView} from 'react-native';
+import {TextInput, TouchableOpacity, View, Text, StyleSheet, FlatList, ScrollView, Image} from 'react-native';
 import Post from "../../components/Post/Post";
 import firebase from 'firebase';
 import {updatePassword} from 'firebase/auth'
@@ -11,7 +11,7 @@ class MyProfile extends Component{
         super(props)
         this.state={
             posts: [],
-            dataUser: [],
+            dataUser: {},
             id: '',
             newPass:"",
             nombreUser: "",
@@ -49,40 +49,84 @@ class MyProfile extends Component{
             })
     }
     
-    signOut() {
-      auth.signOut();
-      this.props.navigation.navigate('Login')
-  }
-  logout() {
+   
+    logout() {
     auth.signOut();
     this.props.navigation.navigate("Login");
-}
+    }
 
     render() {
       console.log('Esto es el Profile')
         return (
-            <ScrollView>
-          <View>
-                <Text>Bienvenido {this.state.dataUser.userName}</Text>
-                <Text>Biografia: {this.state.dataUser.bio}</Text>
-                <Text>Mail: {auth.currentUser.email}</Text>
-                <Text>Mis posteos:</Text>
-                <TouchableOpacity onPress={() => this.logout()}>
-                    <Text>Logout</Text>
-                </TouchableOpacity>
-                <View>
+            <ScrollView style={styles.container}>
+                <View style={styles.container}>
+                    <Text style={styles.username}>Bienvenido {this.state.dataUser.userName}</Text>
+                    <Text style={styles.bio}>Biografia: {this.state.dataUser.bio}</Text>
+                    <Text style={styles.email}>Mail: {auth.currentUser.email}</Text>
+                    <Image style={styles.profileImage} source={{ uri: this.state.dataUser.profileImage }} />
+
+                </View>
+
+                <Text style={styles.sectionTitle}>Mis posteos:</Text>
                 <FlatList
                     data={this.state.posts}
                     keyExtractor={unPost => unPost.id.toString()}
                     renderItem={({ item }) => <Post dataPost={item} />}
                 />
-                </View>
-                <TouchableOpacity onPress={() => this.signOut()}>
-                    <Text> Cerrar sesión</Text>
+               
+                <TouchableOpacity onPress={() => this.logout()} style={styles.logoutButton}>
+                    <Text style={styles.logoutText}>Cerrar sesión</Text>
                 </TouchableOpacity>
-            </View>
+               
+            
             </ScrollView>
             
   )}}
+
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: '#fff',
+        padding: 20,
+    },
+    infoPerfil:{
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    username: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 5,
+    },
+    bio: {
+        fontSize: 16,
+        marginBottom: 5,
+    },
+    email: {
+        fontSize: 16,
+        marginBottom: 15,
+    },
+    profileImage: {
+        width: 150,
+        height: 150,
+        borderRadius: 75,
+    },
+    sectionTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 10,
+    },
+    logoutButton: {
+        backgroundColor: '#ff5a5f',
+        padding: 10,
+        borderRadius: 5,
+        alignItems: 'center',
+        marginTop: 20,
+    },
+    logoutText: {
+        color: '#fff',
+        fontWeight: 'bold',
+    }
+
+});
 
 export default MyProfile;

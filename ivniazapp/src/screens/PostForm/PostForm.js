@@ -22,8 +22,16 @@ class PostForm extends Component{
             likes:[],
             comentarios:[],
             createdAt: Date.now(),//Date.now(), 
+        }) 
+        .then(() => {
+          console.log('Posteo correctamente');
+          // Después de crear el post, volver a mostrar la cámara
+          this.setState({
+            showCamera: true,
+            textPost: '', // Limpiar el texto después de hacer el post
+            url: '', // Limpiar la URL después de hacer el post
+          });
         })
-        .then( res => console.log(res))
         .catch( e => console.log(e))
     }
 
