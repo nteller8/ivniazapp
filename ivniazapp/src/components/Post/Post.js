@@ -83,7 +83,7 @@ class Post extends Component {
                     <Image style={styles.image} source={{uri:this.props.dataPost.datos.photo}}/>
                     </View>
                 </View>
-                <Text style={styles.postContainer}>{this.props.dataPost.datos.textPost}</Text>
+                <Text style={styles.postText}>{this.props.dataPost.datos.textPost}</Text>
                 <View style={styles.likesContainer}>
                     {
                         this.state.like ?
@@ -102,12 +102,13 @@ class Post extends Component {
 
                     <Text style={styles.likeCount}>{this.state.cantLikes} Likes</Text>
                 </View>
-                <View>
-                    <Text>{this.state.cantComentarios} Comentarios</Text>
-                    <TouchableOpacity style={styles.commentButton} onPress={() => this.props.navigation.navigate(
+                <View style={styles.iconBar}>
+                <TouchableOpacity style={styles.commentButton} onPress={() => this.props.navigation.navigate(
                         'Comments', { id: this.props.dataPost.id })}>
                         <FontAwesome name='comment' color='black' size={20} />
                     </TouchableOpacity>
+                    <Text style={styles.commentCount}>{this.state.cantComentarios} Comentarios</Text>
+                    
                 </View>
             </View>
             
@@ -119,15 +120,24 @@ const styles = StyleSheet.create({
     formContainer: {
         height: `60vh`,
         widht: `100vw`,
+        margin: 10,
+        padding: 10,
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        shadowColor: '#000',
+        
     },
-    postContainer: {
-
+    username:{
+        fontWeight: 'bold',
+        fontSize: 16,
     },
     image: {
-height: 300,
-width: "100%"
+        height: 300,
+        width: "100%"
     },
-    container: {flex: 1,},
+    container: {
+        flex: 1,
+    },
     input: {
       height: 20,
       paddingVertical: 15,
@@ -156,11 +166,28 @@ width: "100%"
         marginLeft: 7,
     },
     infoUser:{
-
+        marginBottom: 10,
+    },
+    postText:{
+        fontSize: 16,
+        marginBottom: 10,
+    },
+    likeCount:{
+        fontSize: 14,
+        color: 'grey',
+    },
+    commentCount:{
+        fontSize: 14,
+        color: 'grey',
     },
     likesContainer:{
         flexDirection: 'row',
         alignItems: 'center',
+    },
+    iconBar: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 10,
     },
   });
 
