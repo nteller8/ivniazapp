@@ -4,12 +4,12 @@ import { auth, db } from "../../firebase/config";
 import firebase from 'firebase/app';
 
 
-class Register extends Component {
+class Registro extends Component {
     constructor(){
         super()
         this.state={
             email: '',
-            userName: '',
+            RegistroName: '',
             pass: '',
             bio: '',
             profileImage: '',
@@ -19,7 +19,7 @@ class Register extends Component {
 
     //agregue componentDidMount para cheq si esta logueado en firebase y sino que rediriga al login
     componentDidMount(){
-        console.log("Chequear si el usuario está loguado en firebase.");
+        console.log("Chequear si el usuario está logueado en firebase.");
         auth.onAuthStateChanged( user => {
             console.log(user)
             if( user ){
@@ -31,7 +31,7 @@ class Register extends Component {
 
     register(email, pass, userName, bio, profileImage){
 
-        if (email && pass && userName) {
+        if (email && pass && RegistroName) {
             auth.createUserWithEmailAndPassword(email,pass)
             .then(res => {
                 db.collection('usuarios').add({
@@ -72,7 +72,7 @@ class Register extends Component {
                  <Text>Nombre de usuario: </Text>
                 <TextInput
                     style={styles.input}
-                    onChangeText={text => this.setState({ userName: text })}
+                    onChangeText={text => this.setState({ RegistroName: text })}
                     placeholder='Nombre de usuario'
                     keyboardType='default'
                     value={this.state.userName}
@@ -104,7 +104,7 @@ class Register extends Component {
                 />
                 <TouchableOpacity
                     style={styles.buton}
-                    onPress={() => this.register(this.state.email, this.state.pass, this.state.userName, this.state.bio, this.state.profileImage)} disabled={!this.state.email || !this.state.pass || !this.state.userName}>
+                    onPress={() => this.Registro(this.state.email, this.state.pass, this.state.userName, this.state.bio, this.state.profileImage)} disabled={!this.state.email || !this.state.pass || !this.state.userName}>
                     <Text style={styles.text}>Registrarse</Text>
                 </TouchableOpacity>
                 
@@ -134,4 +134,4 @@ const styles = StyleSheet.create({
     
 })
 
-export default Register
+export default Registro

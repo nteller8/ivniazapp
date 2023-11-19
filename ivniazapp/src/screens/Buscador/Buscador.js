@@ -1,124 +1,143 @@
+import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import React, { Component } from 'react';
-import {
-    TextInput,
-    TouchableOpacity,
-    View,
-    Text,
-    StyleSheet,
-    FlatList,
-} from "react-native";
-import { db, auth } from '../../firebase/config'
-
+import { db } from "../../firebase/config"
 
 class Buscador extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
-            backup: [],
-            textoDelInput: '', //search
-            filter: [],
             usuarios: [],
-            usuarioId: ''
-
-        }
+            busqueda: '',
+            resultados: [],
+            mensaje: '',
+        };
     }
 
     componentDidMount() {
         db.collection('usuarios').onSnapshot(docs => {
-            let usuarios = [];
+            let users = []
             docs.forEach(doc => {
-                usuarios.push({
+                users.push({
                     id: doc.id,
-                    data: doc.data
-                })
-                this.setState({
-                    backup: usuarios //usuarios
+                    data: doc.data()
                 })
             })
+            this.setState({
+                usuarios: users,
+            });
         })
     }
 
-    buscar() {
-
-        let filtroUsuarios = this.state.backup.filter(ain => {
-            if (ain.data.owner.toLowerCase().includes(this.state.textoDelInput.toLowerCase())) {
-                return ain
-            } else if (ain.data.username.toLowerCase().includes(this.state.textoDelInput.toLowerCase())) {
-                return ain
-            }
-        })
+    controlarCambios(text) {
         this.setState({
-            filter: filtroUsuarios
+            busqueda: text
         })
     }
-    usuarioSeleccionado(usuarioId) {
-        this.props.navigation.navigate("User", usuarioId)
-    }
 
+    buscarUsuarios() {
+        const busquedaLower = this.state.busqueda.toLowerCase();
+
+        const resultados = this.state.usuarios.filter((usuario) => 
+            usuario.data.userName.toLowerCase().includes(busquedaLower)
+        );
+
+        if (resultados.length === 0) {
+            this.setState({
+                resultados: [],
+                mensaje: 'No hay resultados que coincidan.',
+            });
+        } else {
+            this.setState({
+                resultados: resultados,
+                mensaje: '',
+            });
+        }
+    }
 
     render() {
-        console.log(this.props);
         return (
-            <View>
+            <View style={styles.container}>
                 <TextInput
                     style={styles.input}
-                    onChangeText={(text) => this.setState({ textoDelInput: text })}
-                    placeholder="username"
-                    keyboardType="default"
-                    value={this.state.textoDelInput}
+                    keyboardType='default'
+                    placeholder='Buscar por nombre de usuario'
+                    onChangeText={(text) => this.controlarCambios(text)}
+                    value={this.state.busqueda}
                 />
-                <TouchableOpacity style={styles.button} onPress={() => this.buscar()}>
-                    <Text>Búsqueda</Text>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => this.buscarUsuarios()}
+                >
+                    <Text style={styles.buttonText}>Buscar</Text>
                 </TouchableOpacity>
-                {this.state.textoDelInput == '' ?
-                    <Text> No ingresaste una búsqueda aún</Text> :
-                    <Text> Resultado de búsqueda: {this.state.textoDelInput}</Text>
-                }
-                {this.state.filter.length > 0 ?
+
+                {this.state.mensaje ? (
+                    <Text style={styles.message}>{this.state.mensaje}</Text>
+                ) : (
                     <FlatList
-                        data={this.state.filter}
-                        keyExtractor={usuario => usuario.id}
-                        renderItem={({ item }) =>
-                            <TouchableOpacity style={styles.button} onPress={() => this.usuarioSeleccionado(item.data.owner)}>
-                                <Text>{item.data.username}</Text>
-                            </TouchableOpacity>
-                        }
+                        data={this.state.resultados}
+                        keyExtractor={(item) => item.id.toString()}
+                        renderItem={({ item }) => (
+                            <View style={styles.userContainer}>
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate(
+                                'User', {mailusuario:item.data.owner})}>
+                                <Text style={styles.userName}>Registro Name: {item.data.userName}</Text>
+                                </TouchableOpacity>
+
+                                {/*   <TouchableOpacity onPress={() => this.props.navigation.navigate(
+                        'Registro', this.props.dataPost.datos.owner )}>
+                        <Text style={styles.Registroname}> {this.props.dataPost.datos.owner}</Text>
+                    </TouchableOpacity> */}
+                            </View>
+                        )}
                     />
-                    : <Text> Usuario/ mail inexistente </Text>
-                }
+                )}
             </View>
         )
     }
 }
 
 const styles = StyleSheet.create({
-    formContainer: {
-        paddingHorizontal: 20,
-        marginTop: 20,
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 20,
+    container: {
+        flex: 1,
+        padding: 20,
+        backgroundColor: '#fff',
     },
     input: {
         height: 40,
         borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 8,
-        paddingLeft: 10,
-        marginBottom: 20,
+        borderColor: '#ddd',
+        borderRadius: 5,
+        paddingHorizontal: 10,
+        marginBottom: 10,
     },
     button: {
         backgroundColor: '#3498db',
-        padding: 15,
+        paddingVertical: 10,
+        borderRadius: 5,
         alignItems: 'center',
-        borderRadius: 8,
+        marginBottom: 10,
     },
-    textButton: {
+    buttonText: {
         color: '#fff',
         fontWeight: 'bold',
     },
+    message: {
+        fontSize: 16,
+        marginBottom: 10,
+        color: '#e74c3c',
+    },
+    userContainer: {
+        borderWidth: 1,
+        borderColor: '#ddd',
+        borderRadius: 5,
+        padding: 10,
+        marginBottom: 10,
+    },
+    userName: {
+        fontSize: 16,
+    },
 });
 
-export default Buscador
+
+export default Buscador;

@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import Register from "./src/screens/Register/Register";
+import Registro from "./src/screens/Registro/Registro";
 import Login from "./src/screens/Login/Login";
 import TabNavigator from './src/components/TabNavigator/TabNavigator';
 import Comments from "./src/screens/Comments/Comments";
@@ -21,7 +21,7 @@ export default function App() {
         />
         <Stack.Screen
           name="Registro"
-          component={Register}
+          component={Registro}
           options={{ headerShown: false }}
         />
         <Stack.Screen

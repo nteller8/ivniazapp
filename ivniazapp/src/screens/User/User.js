@@ -64,8 +64,8 @@ class User extends Component {
     return (
       <View>
  
-        <Text>Biografia: {this.state.dataUser.bio}</Text>
-        <Text>Usuario: {this.state.dataUser.userName}</Text>
+        {/*<Text>Biografia: {this.state.dataRegistro.bio}</Text> 
+          <Text>Usuario: {this.state.dataUser.userName}</Text>
        <Text>{this.state.susPosts.length} posteos:</Text>
 
         <View>
@@ -75,7 +75,7 @@ class User extends Component {
             renderItem={({ item }) => <Post dataPost={item.datos} navigation={this.props.navigation} />}
           />
         </View> 
-
+*/}
 
 
       </View>
@@ -84,5 +84,5 @@ class User extends Component {
     )
   }
 }
- {/**/}
+
 export default User;
