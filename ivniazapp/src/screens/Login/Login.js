@@ -17,6 +17,8 @@ class Login extends Component {
       errorMessage: "",
       errorCodigo: "",
       error:"",
+      loading: true
+
     };
   }
 
@@ -26,12 +28,13 @@ class Login extends Component {
       if (user !== null) {
         this.setState({
           logueado: true,
-          cargando:false,
+          loading:false
+ 
         })
       } else{
         this.setState({
           logueado: false,
-          cargando:false,
+
         })
       }
       })
@@ -55,6 +58,7 @@ class Login extends Component {
 
   render() {
     return (
+      
       <View style={styles.formContainer}>
         <Text style={styles.titulo}>Inicia sesión en tu cuenta</Text>
        
