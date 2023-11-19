@@ -104,7 +104,7 @@ class Registro extends Component {
                 />
                 <TouchableOpacity
                     style={styles.buton}
-                    onPress={() => this.Registro(this.state.email, this.state.pass, this.state.userName, this.state.bio, this.state.profileImage)} disabled={!this.state.email || !this.state.pass || !this.state.userName}>
+                    onPress={() => this.register(this.state.email, this.state.pass, this.state.userName, this.state.bio, this.state.profileImage)} disabled={!this.state.email || !this.state.pass || !this.state.userName}>
                     <Text style={styles.text}>Registrarse</Text>
                 </TouchableOpacity>
                 

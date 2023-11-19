@@ -68,7 +68,7 @@ class Post extends Component {
                 
                 <View style={styles.infoUser}>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate(
-                        'User', this.props.dataPost.datos.owner )}>
+                        'User', {mailusuario: this.props.dataPost.datos.owner} )}>
                         <Text style={styles.username}> {this.props.dataPost.datos.owner}</Text>
                     </TouchableOpacity>
                     <View style={styles.container}>

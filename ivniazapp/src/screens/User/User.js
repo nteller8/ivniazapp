@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { db, auth } from '../../firebase/config';
-import { TextInput, TouchableOpacity, View, Text, StyleSheet, FlatList } from 'react-native';
+import { TextInput, TouchableOpacity, View, Text, StyleSheet, FlatList, ScrollView, Image } from 'react-native';
 import Post from "../../components/Post/Post";
 import firebase from 'firebase';
 
@@ -10,17 +10,16 @@ class User extends Component {
     super(props)
     this.state = {
       susPosts: [],
-      dataUser: "",
-      id: '',
       mailusuario: this.props.route.params.mailusuario,
+      informacion: {}
   
     };
   }
 
   componentDidMount() {
     console.log(this.props.route.params)
-    db.collection('posts').where('owner', '==', this.state.mailusuario)
-
+    db.collection('posts')
+      .where('owner', '==', this.state.mailusuario)
       .onSnapshot(
         listaPosts => { //docs
           let postsAMostrar = [];
@@ -32,70 +31,58 @@ class User extends Component {
           })
 
           this.setState({
-            posts: postsAMostrar
+            susPosts: postsAMostrar
           })
         }
       )
 
     db.collection('usuarios')
-      .where('owner', '==', auth.currentUser.email)
-      .onSnapshot(docs => {
-        let usuario = []
-        docs.forEach((doc) => {
-          usuario.push({
-            id: doc.id,
-            data: doc.data()
+      .where('owner', '==', this.state.mailusuario)
+      .onSnapshot(unPost => {
+        unPost.forEach(unPost => 
+          this.setState({
+            id: unPost.id,
+            informacion: unPost.data()
           })
+        )
+       
         })
-        console.log(usuario)
-        this.setState({
-          dataUser: usuario[0]
-
-        })
-
-
-      })
 
   }
 
 
   render() {
     console.log('Esto es el Profile de otro usuario')
+    console.log(this.state.susPosts);
     return (
-      <View>
- 
-     <Text>Biografia: {this.state.dataUser.bio}</Text> 
-          <Text>Usuario: {this.state.dataUser.userName}</Text>
-       <Text>{this.state.susPosts.length} posteos:</Text>
 
-        <View>
-          <FlatList
-            data={this.state.susPosts}
-            keyExtractor={unPost => unPost.id.toString()}
-            renderItem={({ item }) => <Post dataPost={item.datos} navigation={this.props.navigation} />}
-          />
+      <ScrollView style={styles.formContainer}>
+        <View style={styles.infoProfile}>
+          <Text style={styles.username}>Usuario: {this.state.informacion.userName}</Text>
+          <Text style={styles.username}>Mail: {this.state.mailusuario}</Text>
+          <Text style={styles.bio}>Biografia: {this.state.informacion.bio}</Text>
+          <Text style={styles.posts} >Número de posts: {this.state.susPosts.length}</Text>
+          <Image style={styles.profileImage} source={{ uri: this.state.informacion.profileImage }}/>
         </View> 
-
-
-
-      </View>
-
+        <Text style={styles.sectionTitle}>Sus posteos:</Text>
+        <FlatList
+            data={this.state.susPosts}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => <Post dataPost={item} navigation={this.props.navigation} />}/>
+  
+</ScrollView>
 
     )
   }
 }
 const styles = StyleSheet.create({
-  container: {
+  formContainer: {
       backgroundColor: '#fff',
       padding: 20,
       borderRadius: 10,
       shadowColor: '#000',
-      shadowOffset: {
-          width: 0,
-          height: 2,
   },
-},
-  profileInfo: {
+  infoProfile: {
       alignItems: 'center',
       marginBottom: 20,
   },
