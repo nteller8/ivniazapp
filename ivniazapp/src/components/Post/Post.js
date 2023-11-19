@@ -55,27 +55,11 @@ class Post extends Component {
         cantLikes: this.state.cantLikes -1,
     }))
    }
-//hacer que ande borrar para myprofile
-   borrarPost(){
-    const postOwner = this.props.dataPost.datos.owner;
-    const currentUserEmail = auth.currentUser.email;
-    console.log(this.props);
-    if(postOwner === currentUserEmail){
-        db.collection("posts")
-        .doc(this.props.dataPost.id)
-        .delete()
-        .then(()=> {
-            console.log("El posteo ha sido eliminado correctamente.")
-        })
-        .catch(error=>{
-            console.error('Error al eliminar el post:', error)
-        })
-    } else{
-        this.setState({MensajeAMostrar: true})
 
-    }
-   }
-   
+//hacer que ande borrar para myprofile
+    borrarPost() {
+        db.collection('posts').doc(this.props.dataPost.id).delete();
+  }
 
     render(){
         console.log(this.props);
@@ -118,22 +102,24 @@ class Post extends Component {
                 <TouchableOpacity style={styles.commentButton} onPress={() => this.props.navigation.navigate(
                         'Comments', { id: this.props.dataPost.id })}>
                         <FontAwesome name='comment' color='black' size={20} />
-                    </TouchableOpacity>
-                    <Text style={styles.commentCount}>{this.state.cantComentarios} Comentarios</Text>
-        
-
-
-                <TouchableOpacity style = {styles.trashCount} onPress={this.borrarPost}>
-                    <FontAwesome name="trash" size={20} color="red" />
                 </TouchableOpacity>
-                
-                {this.state.MensajeAMostrar?
-                    (<Text> No tienes permiso para eliminar este post. </Text> ):
-                    null}
+                <Text style={styles.commentCount}>{this.state.cantComentarios} Comentarios</Text>
+               
+                    
+                    {/* BORRAR POST */}
+
+                    {this.props.dataPost.datos.owner === auth.currentUser.email ? (
+                         <TouchableOpacity style={styles.trashCount} onPress={() => this.borrarPost()}>
+                          <FontAwesome name="trash" size={20} color="red" />
+                    </TouchableOpacity>
+                                  ) : (
+                             <Text></Text>
+                                         )}
+      </View>
 
 
                 </View>
-            </View>
+       
             
         )
     }
