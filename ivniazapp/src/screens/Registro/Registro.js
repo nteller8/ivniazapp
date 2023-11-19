@@ -31,7 +31,7 @@ class Registro extends Component {
 
     register(email, pass, userName, bio, profileImage){
 
-        if (email && pass && RegistroName) {
+        if (email && pass && userName) {
             auth.createUserWithEmailAndPassword(email,pass)
             .then(res => {
                 db.collection('usuarios').add({
@@ -72,7 +72,7 @@ class Registro extends Component {
                  <Text>Nombre de usuario: </Text>
                 <TextInput
                     style={styles.input}
-                    onChangeText={text => this.setState({ RegistroName: text })}
+                    onChangeText={text => this.setState({ userName: text })}
                     placeholder='Nombre de usuario'
                     keyboardType='default'
                     value={this.state.userName}

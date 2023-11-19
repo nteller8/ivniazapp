@@ -64,7 +64,7 @@ class User extends Component {
     return (
       <View>
  
-        {/*<Text>Biografia: {this.state.dataRegistro.bio}</Text> 
+     <Text>Biografia: {this.state.dataUser.bio}</Text> 
           <Text>Usuario: {this.state.dataUser.userName}</Text>
        <Text>{this.state.susPosts.length} posteos:</Text>
 
@@ -75,7 +75,7 @@ class User extends Component {
             renderItem={({ item }) => <Post dataPost={item.datos} navigation={this.props.navigation} />}
           />
         </View> 
-*/}
+
 
 
       </View>
@@ -84,5 +84,44 @@ class User extends Component {
     )
   }
 }
-
+const styles = StyleSheet.create({
+  container: {
+      backgroundColor: '#fff',
+      padding: 20,
+      borderRadius: 10,
+      shadowColor: '#000',
+      shadowOffset: {
+          width: 0,
+          height: 2,
+  },
+},
+  profileInfo: {
+      alignItems: 'center',
+      marginBottom: 20,
+  },
+  username: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      marginBottom: 5,
+  },
+  bio: {
+      fontSize: 16,
+      marginBottom: 5,
+  },
+  posts: {
+      fontSize: 16,
+      marginBottom: 15,
+  },
+  profileImage: {
+      width: 150,
+      height: 150,
+      borderRadius: 75,
+  },
+  sectionTitle: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      marginBottom: 10,
+  },
+});
 export default User;
+
