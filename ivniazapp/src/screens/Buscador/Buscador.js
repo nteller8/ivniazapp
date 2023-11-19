@@ -6,10 +6,10 @@ class Buscador extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            usuarios: [],
-            busqueda: '',
-            resultados: [],
             mensaje: '',
+            usuariosdb: [],
+            busquedaInput: '',
+            arrayRes: [],
         };
     }
 
@@ -23,32 +23,32 @@ class Buscador extends Component {
                 })
             })
             this.setState({
-                usuarios: users,
+                usuariosdb: users,
             });
         })
     }
 
     controlarCambios(text) {
         this.setState({
-            busqueda: text
+            busquedaInput: text
         })
     }
 
-    buscarUsuarios() {
-        const busquedaLower = this.state.busqueda.toLowerCase();
+    buscador() {
+        const buscadoToLowerCase = this.state.busquedaInput.toLowerCase();
 
-        const resultados = this.state.usuarios.filter((usuario) => 
-            usuario.data.userName.toLowerCase().includes(busquedaLower)
+        const arrayRes = this.state.usuariosdb.filter((usuario) => 
+            usuario.data.userName.toLowerCase().includes(buscadoToLowerCase)
         );
 
-        if (resultados.length === 0) {
+        if (arrayRes.length === 0) {
             this.setState({
-                resultados: [],
-                mensaje: 'No hay resultados que coincidan.',
+                arrayRes: [],
+                mensaje: 'No hay resultados para tu búsqueda.',
             });
         } else {
             this.setState({
-                resultados: resultados,
+                arrayRes: arrayRes,
                 mensaje: '',
             });
         }
@@ -60,34 +60,30 @@ class Buscador extends Component {
                 <TextInput
                     style={styles.input}
                     keyboardType='default'
-                    placeholder='Buscar por nombre de usuario'
+                    placeholder='Buscar nombre de usuario'
                     onChangeText={(text) => this.controlarCambios(text)}
-                    value={this.state.busqueda}
+                    value={this.state.busquedaInput}
                 />
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => this.buscarUsuarios()}
+                    onPress={() => this.buscador()}
                 >
                     <Text style={styles.buttonText}>Buscar</Text>
                 </TouchableOpacity>
 
                 {this.state.mensaje ? (
-                    <Text style={styles.message}>{this.state.mensaje}</Text>
+                    <Text style={styles.error}>{this.state.mensaje}</Text>
                 ) : (
                     <FlatList
-                        data={this.state.resultados}
+                        data={this.state.arrayRes}
                         keyExtractor={(item) => item.id.toString()}
                         renderItem={({ item }) => (
                             <View style={styles.userContainer}>
                                 <TouchableOpacity onPress={() => this.props.navigation.navigate(
                                 'User', {mailusuario:item.data.owner})}>
-                                <Text style={styles.userName}>Registro Name: {item.data.userName}</Text>
+                                <Text style={styles.userName}>Nombre de usuario: {item.data.userName}</Text>
                                 </TouchableOpacity>
 
-                                {/*   <TouchableOpacity onPress={() => this.props.navigation.navigate(
-                        'Registro', this.props.dataPost.datos.owner )}>
-                        <Text style={styles.Registroname}> {this.props.dataPost.datos.owner}</Text>
-                    </TouchableOpacity> */}
                             </View>
                         )}
                     />
@@ -101,12 +97,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
-        backgroundColor: '#fff',
+        backgroundColor: 'white',
     },
     input: {
         height: 40,
         borderWidth: 1,
-        borderColor: '#ddd',
+        borderColor: 'grey',
         borderRadius: 5,
         paddingHorizontal: 10,
         marginBottom: 10,
@@ -122,10 +118,10 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontWeight: 'bold',
     },
-    message: {
+    error: {
         fontSize: 16,
         marginBottom: 10,
-        color: '#e74c3c',
+        color: 'red',
     },
     userContainer: {
         borderWidth: 1,

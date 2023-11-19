@@ -96,20 +96,29 @@ class Post extends Component {
                     }
 
 
-                    <Text style={styles.likeCount}>{this.state.cantLikes} Likes</Text>
+                    <Text style={styles.likeCount}>{this.state.cantLikes} Likes</Text> 
+                        <FontAwesome name='comment' color='black' size={20} /><Text style={styles.commentCount}>{this.state.cantComentarios} Comentarios</Text>
                 </View>
-                <View style={styles.iconBar}>
+                <View style={styles.iconBar}> 
+                <FlatList 
+                    data={this.state.comentarios.slice(0,4)} 
+                    keyExtractor={ oneComent => oneComent.createdAt.toString()}
+                    renderItem={ ({item}) => <Text style={styles.comentarioOwner}>{item.owner}: <Text style={styles.comentario}> {item.comentario}</Text>  </Text>}
+                />
                 <TouchableOpacity style={styles.commentButton} onPress={() => this.props.navigation.navigate(
                         'Comments', { id: this.props.dataPost.id })}>
-                        <FontAwesome name='comment' color='black' size={20} />
+                      
                 </TouchableOpacity>
-                <Text style={styles.commentCount}>{this.state.cantComentarios} Comentarios</Text>
+             
                
-                    
+                {/* ADICIONAL */}
+                <View>
+               
+                   </View> 
                     {/* BORRAR POST */}
 
                     {this.props.dataPost.datos.owner === auth.currentUser.email ? (
-                         <TouchableOpacity style={styles.trashCount} onPress={() => this.borrarPost()}>
+                         <TouchableOpacity style={styles.basurero} onPress={() => this.borrarPost()}>
                           <FontAwesome name="trash" size={20} color="red" />
                     </TouchableOpacity>
                                   ) : (
@@ -127,69 +136,70 @@ class Post extends Component {
 
 const styles = StyleSheet.create({
     formContainer: {
-        height: `60vh`,
-        widht: `100vw`,
         margin: 10,
         padding: 10,
         backgroundColor: '#fff',
         borderRadius: 10,
         shadowColor: '#000',
-        
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        elevation: 5,
     },
-    username:{
+    username: {
         fontWeight: 'bold',
         fontSize: 16,
     },
     image: {
         height: 300,
-        width: "100%"
+        width: "100%",
+        borderRadius: 10,
     },
     container: {
         flex: 1,
     },
     input: {
-      height: 20,
-      paddingVertical: 15,
-      paddingHorizontal: 10,
-      borderWidth: 1,
-      borderColor: "#ccc",
-      borderStyle: "solid",
-      borderRadius: 6,
-      marginVertical: 10,
+        height: 20,
+        paddingVertical: 15,
+        paddingHorizontal: 10,
+        borderWidth: 1,
+        borderColor: "#ccc",
+        borderStyle: "solid",
+        borderRadius: 6,
+        marginVertical: 10,
     },
     button: {
-      backgroundColor: "salmon",
-      paddingHorizontal: 10,
-      paddingVertical: 6,
-      textAlign: "center",
-      borderRadius: 4,
-      borderWidth: 1,
-      borderStyle: "solid",
-      borderColor: "salmon",
-      width: "30%",
+        backgroundColor: "salmon",
+        paddingHorizontal: 10,
+        paddingVertical: 6,
+        textAlign: "center",
+        borderRadius: 4,
+        borderWidth: 1,
+        borderStyle: "solid",
+        borderColor: "salmon",
+        width: "30%",
     },
     textButton: {
-      color: "#fff",
+        color: "#fff",
     },
     likeButton: {
         marginLeft: 7,
     },
-    infoUser:{
+    infoUser: {
         marginBottom: 10,
     },
-    postText:{
+    postText: {
         fontSize: 16,
         marginBottom: 10,
     },
-    likeCount:{
+    likeCount: {
         fontSize: 14,
         color: 'grey',
     },
-    commentCount:{
+    commentCount: {
         fontSize: 14,
         color: 'grey',
     },
-    likesContainer:{
+    likesContainer: {
         flexDirection: 'row',
         alignItems: 'center',
     },
@@ -198,12 +208,24 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 10,
     },
-    trashCount: {
+    basurero: {
         position: 'absolute',
         bottom: 5,
         right: 5,
     },
-  });
+    comentario: {
+        color: "black",
+        marginTop: 8,
+        fontSize: 14,
+        fontWeight: 'normal'
+        
+
+    },
+    comentarioOwner:{
+        fontWeight:'bold'
+    }
+});
+
 
 
 

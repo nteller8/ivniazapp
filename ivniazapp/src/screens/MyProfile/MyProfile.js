@@ -55,15 +55,18 @@ class MyProfile extends Component{
     this.props.navigation.navigate("Login");
     }
 
+    
+
     render() {
       console.log('Esto es el Profile')
         return (
             <ScrollView style={styles.container}>
                 <View style={styles.container}>
+                    <Image style={styles.profileImage} source={{ uri: this.state.dataUser.profileImage }} />
                     <Text style={styles.username}>Bienvenido {this.state.dataUser.userName}</Text>
                     <Text style={styles.bio}>Biografia: {this.state.dataUser.bio}</Text>
                     <Text style={styles.email}>Mail: {auth.currentUser.email}</Text>
-                    <Image style={styles.profileImage} source={{ uri: this.state.dataUser.profileImage }} />
+                    
 
                 </View>
 
@@ -83,50 +86,54 @@ class MyProfile extends Component{
             
   )}}
 
-const styles = StyleSheet.create({
+  const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#fff',
         padding: 20,
+        backgroundColor: '#F8F8F8',
     },
-    infoPerfil:{
-        alignItems: 'center',
+    infoPerfil: {
         marginBottom: 20,
-    },
-    username: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginBottom: 5,
-    },
-    bio: {
-        fontSize: 16,
-        marginBottom: 5,
-    },
-    email: {
-        fontSize: 16,
-        marginBottom: 15,
+        alignItems: 'center',
     },
     profileImage: {
         width: 150,
         height: 150,
         borderRadius: 75,
     },
-    sectionTitle: {
+    username: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginBottom: 8,
+        color: '#2C3E50', // Azul oscuro
+    },
+    bio: {
         fontSize: 18,
+        marginBottom: 8,
+        color: '#34495E', // Gris azulado
+    },
+    email: {
+        fontSize: 18,
+        marginBottom: 15,
+        color: '#34495E', // Gris azulado
+    },
+    sectionTitle: {
+        fontSize: 20,
         fontWeight: 'bold',
         marginBottom: 10,
+        color: '#3498DB', // Azul brillante
     },
     logoutButton: {
-        backgroundColor: '#ff5a5f',
-        padding: 10,
-        borderRadius: 5,
-        alignItems: 'center',
         marginTop: 20,
+        backgroundColor: '#E74C3C', // Rojo
+        borderRadius: 8,
+        padding: 12,
+        alignItems: 'center',
     },
     logoutText: {
-        color: '#fff',
+        color: '#ECF0F1', // Blanco
         fontWeight: 'bold',
-    }
-
+    },
 });
+
 
 export default MyProfile;
