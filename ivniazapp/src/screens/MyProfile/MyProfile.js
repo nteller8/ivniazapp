@@ -4,8 +4,6 @@ import {TextInput, TouchableOpacity, View, Text, StyleSheet, FlatList, ScrollVie
 import Post from "../../components/Post/Post";
 import firebase from 'firebase';
 import {updatePassword} from 'firebase/auth'
-
-
 class MyProfile extends Component{
     constructor(props){
         super(props)
@@ -15,7 +13,12 @@ class MyProfile extends Component{
             id: '',
             newPass:"",
             nombreUser: "",
-
+            perfilABorrar: null,
+            edit: false,
+            newUsername: '',
+            newEmail: '',
+            newBio: '',
+            errors: '',
         };
     }
 
@@ -31,13 +34,11 @@ class MyProfile extends Component{
                         datos: unPost.data()
                     })
                 })
-
                 this.setState({
                     posts: postsAMostrar
                 })
             }
         )
-
         db.collection('usuarios')
             .where('owner', '==', auth.currentUser.email)
             .onSnapshot(docs => {
@@ -55,21 +56,46 @@ class MyProfile extends Component{
     this.props.navigation.navigate("Login");
     }
 
-    
+    borrarPerfil(item){
+        db.collection('users').doc(this.state.dataUser[0]).delete()
+        .then(()=> {
+            const user = firebase.auth().currentUser;
+            user.delete();
+            alert('El perfil se eliminó exitosamente');
+            this.props.navigation.navigate('Register')
+        })
+
+        .catch(error => {
+            console.error('error')
+        })
+    }
+
+    confBorrarPerfil(item){
+        this.setState({perfilABorrar: item})
+    }
+
+    finalBorrarPerfil(){
+        this.borrarPerfil(this.state.perfilABorrar);
+        this.setState({ perfilABorrar: null});
+        this.navigation.navigate("Register")
+    }    
+
+    noBorrarPerfil(){
+        this.setState({ perfilABorrar: null});
+    }
+
+
 
     render() {
       console.log('Esto es el Profile')
         return (
             <ScrollView style={styles.container}>
                 <View style={styles.container}>
-                    <Image style={styles.profileImage} source={{ uri: this.state.dataUser.profileImage }} />
                     <Text style={styles.username}>Bienvenido {this.state.dataUser.userName}</Text>
                     <Text style={styles.bio}>Biografia: {this.state.dataUser.bio}</Text>
                     <Text style={styles.email}>Mail: {auth.currentUser.email}</Text>
-                    
-
+                    <Image style={styles.profileImage} source={{ uri: this.state.dataUser.profileImage }} />
                 </View>
-
                 <Text style={styles.sectionTitle}>Mis posteos:</Text>
                 <FlatList
                     data={this.state.posts}
@@ -80,60 +106,87 @@ class MyProfile extends Component{
                 <TouchableOpacity onPress={() => this.logout()} style={styles.logoutButton}>
                     <Text style={styles.logoutText}>Cerrar sesión</Text>
                 </TouchableOpacity>
-               
-            
-            </ScrollView>
-            
-  )}}
 
-  const styles = StyleSheet.create({
+              
+               
+                    : <Text> </Text>
+                
+                <TouchableOpacity style={styles.button} onPress={() => this.confBorrarPerfil()}>
+                        <Text>Borrar perfil </Text>
+                </TouchableOpacity>
+
+                {this.state.perfilABorrar !== null ?
+                <View>
+                   <Text>
+                    Querés eliminar el perfil? No podrás recuperarlo
+                </Text>
+
+                <TouchableOpacity style={styles.button} onPress={() => this.finalBorrarPerfil()}>
+                <Text style={styles.textButtonDelete}>Aceptar</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.button} onPress={() => this.noBorrarPerfil()}>
+                <Text style={styles.textButtonDelete}>Cancelar</Text>
+                </TouchableOpacity>
+                </View>
+
+                 :
+                null
+            }
+            </ScrollView>
+
+  )}
+        }
+const styles = StyleSheet.create({
     container: {
+        backgroundColor: '#fff',
         padding: 20,
-        backgroundColor: '#F8F8F8',
     },
-    infoPerfil: {
-        marginBottom: 20,
+    infoPerfil:{
         alignItems: 'center',
+        marginBottom: 20,
+    },
+    username: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 5,
+    },
+    bio: {
+        fontSize: 16,
+        marginBottom: 5,
+    },
+    email: {
+        fontSize: 16,
+        marginBottom: 15,
     },
     profileImage: {
         width: 150,
         height: 150,
         borderRadius: 75,
     },
-    username: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 8,
-        color: '#2C3E50', // Azul oscuro
-    },
-    bio: {
-        fontSize: 18,
-        marginBottom: 8,
-        color: '#34495E', // Gris azulado
-    },
-    email: {
-        fontSize: 18,
-        marginBottom: 15,
-        color: '#34495E', // Gris azulado
-    },
     sectionTitle: {
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 10,
-        color: '#3498DB', // Azul brillante
     },
     logoutButton: {
-        marginTop: 20,
-        backgroundColor: '#E74C3C', // Rojo
-        borderRadius: 8,
-        padding: 12,
+        backgroundColor: '#ff5a5f',
+        padding: 10,
+        borderRadius: 5,
         alignItems: 'center',
+        marginTop: 20,
     },
     logoutText: {
-        color: '#ECF0F1', // Blanco
+        color: '#fff',
         fontWeight: 'bold',
     },
-});
+    button: {
+        backgroundColor: '#3498db',
+        padding: 15,
+        alignItems: 'center',
+        borderRadius: 8,
+      }
 
+});
 
 export default MyProfile;
