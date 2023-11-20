@@ -3,7 +3,6 @@ import {db, auth } from '../../firebase/config';
 import {TextInput, TouchableOpacity, View, Text, StyleSheet, FlatList, ScrollView, Image} from 'react-native';
 import Post from "../../components/Post/Post";
 import firebase from 'firebase';
-import {updatePassword} from 'firebase/auth'
 class MyProfile extends Component{
     constructor(props){
         super(props)
@@ -11,13 +10,7 @@ class MyProfile extends Component{
             posts: [],
             dataUser: {},
             id: '',
-            newPass:"",
-            nombreUser: "",
             perfilABorrar: null,
-            edit: false,
-            newUsername: '',
-            newEmail: '',
-            newBio: '',
             errors: '',
         };
     }
